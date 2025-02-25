@@ -1,11 +1,24 @@
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { Inter } from "next/font/google";
 import Sidebar from "./components/layout/Sidebar";
 import "./globals.css";
 
-export default function RootLayout() {
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>
-        <Sidebar>{<></>}</Sidebar>
+      <body className={inter.className}>
+        <SidebarProvider>
+          <Sidebar>{children}</Sidebar>
+        </SidebarProvider>
       </body>
     </html>
   );

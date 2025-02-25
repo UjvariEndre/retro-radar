@@ -1,16 +1,15 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { sidebarItems } from "@/lib/constants";
 
 const Sidebar = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <SidebarProvider>
-        <AppSidebar />
-        <main>
-          <SidebarTrigger />
-          {children}
-        </main>
-      </SidebarProvider>
+      <AppSidebar items={sidebarItems} />
+      <main className="w-full">
+        <SidebarTrigger className="absolute" />
+        {children}
+      </main>
     </>
   );
 };
