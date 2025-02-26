@@ -1,4 +1,4 @@
-import Logo from "@/app/components/layout/Logo";
+import Logo from "@/components/layout/Logo";
 import {
   Sidebar,
   SidebarContent,

@@ -1,6 +1,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Inter } from "next/font/google";
-import Sidebar from "./components/layout/Sidebar";
+import Sidebar from "../components/layout/Sidebar";
 import "./globals.css";
 
 const inter = Inter({
