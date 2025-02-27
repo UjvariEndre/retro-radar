@@ -1,4 +1,4 @@
-import Logo from "@/components/layout/Logo";
+import Logo from "@/components/design/Logo";
 import {
   Sidebar,
   SidebarContent,
@@ -20,8 +20,8 @@ export function AppSidebar({ items }: AppSidebarProps) {
     <Sidebar>
       <SidebarContent className="bg-gray-900 text-white">
         <SidebarGroup>
-          <SidebarGroupLabel className="mt-4 mb-4 justify-center">
-            <Logo className="tracking-wider text-lg" />
+          <SidebarGroupLabel className="mt-5 mb-4 justify-center opacity-100">
+            <Logo variant="dark" />
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

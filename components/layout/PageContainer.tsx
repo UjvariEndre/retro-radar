@@ -7,7 +7,9 @@ interface PageContainerProps {
 
 const PageContainer = ({ children, className }: PageContainerProps) => {
   return (
-    <section className={cn("py-7 px-10 w-full", className)}>{children}</section>
+    <section className={cn("py-7 px-10 w-full bg-gray-800", className)}>
+      {children}
+    </section>
   );
 };
 

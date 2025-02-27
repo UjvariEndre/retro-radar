@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
+import { PluginAPI } from "tailwindcss/types/config";
 
 const config: Config = {
   darkMode: ["class"],
@@ -67,9 +68,23 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+        shrikhand: ["Shrikhand", "cursive"],
+      },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [
+    tailwindcssAnimate,
+    function ({ addUtilities }: PluginAPI) {
+      addUtilities({
+        ".text-glow-left-dark": {
+          textShadow:
+            "-5px 0 3px rgba(240, 99, 165, 0.8), 0 0 2px rgba(46, 19, 32, 0.5)",
+        },
+      });
+    },
+  ],
 };
 
 export default config satisfies Config;
