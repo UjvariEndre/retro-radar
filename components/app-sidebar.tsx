@@ -20,7 +20,7 @@ export function AppSidebar({ items }: AppSidebarProps) {
     <Sidebar>
       <SidebarContent className="bg-gray-900 text-white">
         <SidebarGroup>
-          <SidebarGroupLabel className="mt-5 mb-4 justify-center opacity-100">
+          <SidebarGroupLabel className="mb-4 mt-5 justify-center opacity-100">
             <Logo variant="dark" />
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -29,7 +29,7 @@ export function AppSidebar({ items }: AppSidebarProps) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className="hover:bg-gray-800 active:bg-gray-800 hover:text-white active:text-white"
+                    className="hover:bg-gray-800 hover:text-white active:bg-gray-800 active:text-white"
                   >
                     <a href={item.url} target={item.target}>
                       <item.icon />

@@ -19,9 +19,9 @@ const TitlePrimary = ({ children, className }: TitlePrimaryProps) => {
     <>
       <h1
         className={cn(
-          "text-3xl text-slate-100 mb-4",
+          "mb-4 text-3xl text-slate-100",
           shrikhand.className,
-          className
+          className,
         )}
       >
         {children}

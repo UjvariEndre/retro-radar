@@ -1,6 +1,6 @@
 const HrPrimary = () => {
   return (
-    <hr className="h-[1px] w-full bg-gradient-to-r from-transparent via-gray-400 to-transparent border-none" />
+    <hr className="mb-6 h-[1px] w-full border-none bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
   );
 };
 export default HrPrimary;
