@@ -7,7 +7,8 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import ButtonPrimary from "../features/ButtonPrimary";
+import { LucideChevronLeft, LucideChevronRight } from "lucide-react";
+import ButtonPrimary from "../features/RRButton";
 
 interface TableProps {
   data: unknown[];
@@ -62,7 +63,8 @@ const Table = ({ data, columns }: TableProps) => {
           variant="secondary"
           type="submit"
         >
-          Previous
+          <LucideChevronLeft />
+          Prev
         </ButtonPrimary>
         <ButtonPrimary
           onClick={() => table.nextPage()}
@@ -70,7 +72,7 @@ const Table = ({ data, columns }: TableProps) => {
           variant="secondary"
           type="submit"
         >
-          Next
+          Next <LucideChevronRight />
         </ButtonPrimary>
       </div>
     </div>

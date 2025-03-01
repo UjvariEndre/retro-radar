@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Shrikhand } from "next/font/google";
 import React from "react";
-import HrPrimary from "../design/HrPrimary";
+import HrPrimary from "../features/RRHr";
 
 const shrikhand = Shrikhand({
   subsets: ["latin"],

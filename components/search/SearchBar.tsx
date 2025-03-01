@@ -1,11 +1,16 @@
 "use client";
 
+import { SelectOptionsModel } from "@/lib/models/ui.models";
+import { LucideSlidersHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ButtonPrimary from "../features/ButtonPrimary";
+import ButtonPrimary from "../features/RRButton";
+import RRInput from "../features/RRInput";
+import RRSelect from "../features/RRSelect";
 
 export default function SearchBar() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
+  const [recordPerPage, setRecordPerPage] = useState<string>("30");
   const router = useRouter();
 
   const handleSearch = (event: React.FormEvent) => {
@@ -15,14 +20,40 @@ export default function SearchBar() {
 
   return (
     <form onSubmit={handleSearch} className="mb-4 flex gap-2">
-      <input
+      <RRInput
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search games..."
-        className="rounded-lg border p-2"
       />
+      <RRSelect
+        options={options}
+        onChange={setRecordPerPage}
+        defaultValue="30"
+      />
+      <ButtonPrimary type="button" variant="secondary">
+        <LucideSlidersHorizontal />
+      </ButtonPrimary>
       <ButtonPrimary type="submit">Search</ButtonPrimary>
     </form>
   );
 }
+
+const options: SelectOptionsModel = [
+  {
+    value: "15",
+    title: "15 Results Per Page",
+  },
+  {
+    value: "30",
+    title: "30 Results Per Page",
+  },
+  {
+    value: "50",
+    title: "50 Results Per Page",
+  },
+  {
+    value: "100",
+    title: "100 Results Per Page",
+  },
+];
