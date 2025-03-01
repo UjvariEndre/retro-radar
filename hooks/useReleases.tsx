@@ -2,7 +2,7 @@ import { getReleases } from "@/lib/api";
 import { ReleasesModel } from "@/lib/models/releases.model";
 import { useCallback, useEffect, useState } from "react";
 
-export function useReleases(pageSize = 10) {
+export function useReleases(pageSize = 1000) {
   const [releases, setReleases] = useState<ReleasesModel>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -12,7 +12,6 @@ export function useReleases(pageSize = 10) {
     Record<string, string | number | null>
   >({});
   const [sortBy, setSortBy] = useState("created_at");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   // Fetch releases with error handling
   const fetchReleases = useCallback(async () => {
@@ -24,7 +23,6 @@ export function useReleases(pageSize = 10) {
         page,
         pageSize,
         sortBy,
-        sortOrder,
         filters,
       });
 
@@ -35,7 +33,7 @@ export function useReleases(pageSize = 10) {
     } finally {
       setLoading(false);
     }
-  }, [page, pageSize, sortBy, sortOrder, filters]);
+  }, [page, pageSize, sortBy, filters]);
 
   // Automatically fetch releases when dependencies change
   useEffect(() => {
@@ -45,7 +43,7 @@ export function useReleases(pageSize = 10) {
   // Reset page when filters, sorting, or order change
   useEffect(() => {
     setPage(1);
-  }, [filters, sortBy, sortOrder]);
+  }, [filters, sortBy]);
 
   return {
     releases,
@@ -58,7 +56,5 @@ export function useReleases(pageSize = 10) {
     setFilters,
     sortBy,
     setSortBy,
-    sortOrder,
-    setSortOrder,
   };
 }

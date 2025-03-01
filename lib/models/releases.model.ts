@@ -27,8 +27,8 @@ export const ReleaseReleaseDateSchema = z.string().refine((val) => {
 export type ReleaseReleaseDateModel = z.infer<typeof ReleaseReleaseDateSchema>;
 
 export const ReleaseItemSchema = z.object({
-  id: CommonIntIdSchema.min(1),
-  created_at: CommonTimestampSchema.min(1),
+  id: CommonIntIdSchema.optional(),
+  created_at: CommonTimestampSchema.optional(),
   title: CommonNameSchema.min(1),
   platform_name: CommonNameSchema.min(1),
   wiki_tag: WikiTagSchema.optional(),
