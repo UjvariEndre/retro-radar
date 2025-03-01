@@ -1,24 +1,37 @@
 import { supabase } from "@/lib/supabaseClient";
+import { dbReleasesSchema } from "./models/db";
+import { ReleasesModel } from "./models/releases.model";
 
 export async function getReleases({
-  page = 1,
-  pageSize = 10,
-  sortBy = "created_at",
-  sortOrder = "desc",
+  pageSize = 1000,
+  isAscending = false,
   filters = {},
 }: {
   page?: number;
   pageSize?: number;
   sortBy?: string;
-  sortOrder?: "asc" | "desc";
+  isAscending?: boolean;
   filters?: Record<string, string | number | null>;
 }) {
-  const offset = (page - 1) * pageSize;
   let query = supabase
     .from("releases")
-    .select("*", { count: "exact" })
-    .order(sortBy, { ascending: sortOrder === "asc" })
-    .range(offset, offset + pageSize - 1);
+    .select(
+      `
+        id,
+        created_at,
+        title,
+        release_date,
+        wiki_tag,
+        is_licensed,
+        market_tag:market_id (tag),
+        platform_name:platform_id (name),
+        publisher_name:publisher_id (name),
+        market_id
+      `,
+    )
+    .gt("created_at", "2025-02-24 06:07:00.099621+00")
+    .order("created_at", { ascending: isAscending })
+    .limit(pageSize);
 
   // Apply Filters Dynamically
   Object.entries(filters).forEach(([key, value]) => {
@@ -27,12 +40,24 @@ export async function getReleases({
     }
   });
 
+  // Execute query
   const { data, count, error } = await query;
+  if (error) throw new Error("Supabase error: ", error);
 
-  if (error) {
-    console.error("Supabase error:", error);
-    return { releases: [], total: 0 };
-  }
+  // Validate and transform data
+  const parsedData = await dbReleasesSchema.safeParse(data);
+  if (!parsedData.success) throw new Error("Invalid data format from Supabase");
 
-  return { releases: data, total: count };
+  const transformedData: ReleasesModel = parsedData.data.map((release) => ({
+    id: release.id,
+    created_at: release.created_at,
+    title: release.title,
+    release_date: release.release_date ?? undefined,
+    is_licensed: release.is_licensed ?? undefined,
+    platform_name: release.platform_name?.name ?? undefined,
+    publisher_name: release.publisher_name?.name ?? undefined,
+    market_tag: release.market_tag?.tag ?? undefined,
+  }));
+
+  return { releases: transformedData, total: count ?? 0 };
 }
