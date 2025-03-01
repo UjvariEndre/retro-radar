@@ -2,11 +2,11 @@ import { Button, ButtonProps } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import React from "react";
 
-interface ButtonPrimaryProps extends ButtonProps {
+interface RRButtonProps extends ButtonProps {
   children: React.ReactNode;
 }
 
-const ButtonPrimary = (props: ButtonPrimaryProps) => {
+const RRButton = (props: RRButtonProps) => {
   const style = "h-11 px-4 py-2 rounded-lg select-none";
   let variant;
   switch (props.variant) {
@@ -24,4 +24,4 @@ const ButtonPrimary = (props: ButtonPrimaryProps) => {
     </Button>
   );
 };
-export default ButtonPrimary;
+export default RRButton;
