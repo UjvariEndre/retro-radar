@@ -56,7 +56,7 @@ const Table = ({ data, columns }: TableProps) => {
         </tbody>
       </table>
 
-      <div className="mt-4 flex gap-2">
+      <div className="mt-2 flex gap-2">
         <ButtonPrimary
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}

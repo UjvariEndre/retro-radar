@@ -19,7 +19,7 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={handleSearch} className="mb-4 flex gap-2">
+    <form onSubmit={handleSearch} className="mb-2 flex gap-2">
       <RRInput
         type="text"
         value={query}
