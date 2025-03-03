@@ -1,11 +1,15 @@
-import { getReleases } from "@/lib/api";
+import { getPaginationCursors, getReleases } from "@/lib/api";
 import { ReleasesModel } from "@/lib/models/releases.model";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-export function useReleases(pageSize = 1000) {
+export function useReleases(
+  pageSize = 30,
+  pageIndex: number = 0,
+  cursors: number[],
+  setPageIndex: (pageIndex: number) => void,
+  setCursors: (cursors: number[]) => void,
+) {
   const [releases, setReleases] = useState<ReleasesModel>([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<
@@ -13,43 +17,45 @@ export function useReleases(pageSize = 1000) {
   >({});
   const [sortBy, setSortBy] = useState("created_at");
 
+  useEffect(() => {
+    async function loadCursors() {
+      const cursorList = await getPaginationCursors(pageSize);
+      setCursors(cursorList);
+      setPageIndex(0);
+    }
+    loadCursors();
+  }, [pageSize, setPageIndex, setCursors]); // Reload when the user changes page size
+
+  const cursorId = useMemo(() => cursors[pageIndex], [cursors, pageIndex]);
+
   // Fetch releases with error handling
   const fetchReleases = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const { releases: newReleases, total } = await getReleases({
-        page,
+      const { releases: newReleases } = await getReleases({
         pageSize,
+        cursorId,
         sortBy,
         filters,
       });
 
       setReleases(newReleases);
-      setTotalPages(Math.max(1, Math.ceil((total ?? 0) / pageSize)));
     } catch (error) {
       setError(`Failed to fetch releases: ${error}`);
     } finally {
       setLoading(false);
     }
-  }, [page, pageSize, sortBy, filters]);
+  }, [pageSize, cursorId, sortBy, filters]);
 
   // Automatically fetch releases when dependencies change
   useEffect(() => {
     fetchReleases();
   }, [fetchReleases]);
 
-  // Reset page when filters, sorting, or order change
-  useEffect(() => {
-    setPage(1);
-  }, [filters, sortBy]);
-
   return {
     releases,
-    page,
-    setPage,
-    totalPages,
     loading,
     error,
     filters,

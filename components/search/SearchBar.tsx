@@ -8,9 +8,12 @@ import ButtonPrimary from "../features/RRButton";
 import RRInput from "../features/RRInput";
 import RRSelect from "../features/RRSelect";
 
-export default function SearchBar() {
+interface SearchBarProps {
+  onPerPageChange: (value: string) => void;
+}
+
+export default function SearchBar({ onPerPageChange }: SearchBarProps) {
   const [query, setQuery] = useState<string>("");
-  const [recordPerPage, setRecordPerPage] = useState<string>("30");
   const router = useRouter();
 
   const handleSearch = (event: React.FormEvent) => {
@@ -28,7 +31,7 @@ export default function SearchBar() {
       />
       <RRSelect
         options={options}
-        onChange={setRecordPerPage}
+        onChange={onPerPageChange}
         defaultValue="30"
       />
       <ButtonPrimary type="button" variant="secondary">

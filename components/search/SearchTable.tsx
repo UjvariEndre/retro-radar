@@ -1,26 +1,35 @@
 "use client";
 
 import { useReleases } from "@/hooks/useReleases";
-import Table from "../table/Table";
+import { useState } from "react";
+import ReleasesTable from "../table/ReleasesTable";
 import SearchBar from "./SearchBar";
 
 const SearchTable = () => {
-  const { releases } = useReleases(1000);
+  // Hooks
+  const [recordPerPage, setRecordPerPage] = useState<number>(30);
+  const [pageIndex, setPageIndex] = useState<number>(0);
+  const [cursors, setCursors] = useState<number[]>([]);
+  const { releases, loading } = useReleases(
+    recordPerPage,
+    pageIndex,
+    cursors,
+    setPageIndex,
+    setCursors,
+  );
 
   return (
     <>
-      <SearchBar />
-      <Table data={releases} columns={columns} />
+      <SearchBar onPerPageChange={(value) => setRecordPerPage(Number(value))} />
+      <ReleasesTable
+        data={releases}
+        isLoading={loading}
+        recordPerPage={recordPerPage}
+        pageIndex={pageIndex}
+        pageCount={cursors.length}
+        onPageChange={setPageIndex}
+      />
     </>
   );
 };
 export default SearchTable;
-
-const columns = [
-  { accessorKey: "title", header: "Title" },
-  { accessorKey: "is_licensed", header: "Licensed" },
-  { accessorKey: "release_date", header: "Released" },
-  { accessorKey: "publisher_name", header: "Publisher" },
-  { accessorKey: "platform_name", header: "Platform" },
-  { accessorKey: "market_tag", header: "Market" },
-];

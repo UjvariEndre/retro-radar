@@ -1,14 +1,16 @@
 import { supabase } from "@/lib/supabaseClient";
+import { CommonIntIdModel } from "./models/common.models";
 import { dbReleasesSchema } from "./models/db";
-import { ReleasesModel } from "./models/releases.model";
+import { ReleaseItemModel, ReleasesModel } from "./models/releases.model";
 
 export async function getReleases({
-  pageSize = 1000,
+  pageSize = 30,
+  cursorId = 1,
   isAscending = false,
   filters = {},
 }: {
-  page?: number;
   pageSize?: number;
+  cursorId?: CommonIntIdModel;
   sortBy?: string;
   isAscending?: boolean;
   filters?: Record<string, string | number | null>;
@@ -29,9 +31,12 @@ export async function getReleases({
         market_id
       `,
     )
-    .gt("created_at", "2025-02-24 06:07:00.099621+00")
     .order("created_at", { ascending: isAscending })
     .limit(pageSize);
+
+  if (cursorId) {
+    query.lte("id", cursorId);
+  }
 
   // Apply Filters Dynamically
   Object.entries(filters).forEach(([key, value]) => {
@@ -60,4 +65,17 @@ export async function getReleases({
   }));
 
   return { releases: transformedData, total: count ?? 0 };
+}
+
+export async function getPaginationCursors(pageSize: number) {
+  const { data, error } = await supabase.rpc("fetch_cursor_keys", {
+    page_size: pageSize,
+  });
+
+  if (error) {
+    console.error("Error fetching pagination cursors:", error);
+    return [];
+  }
+
+  return data.map((item: ReleaseItemModel) => item.id); // Returns an array of IDs
 }
