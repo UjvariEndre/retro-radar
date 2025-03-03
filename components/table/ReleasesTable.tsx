@@ -11,6 +11,15 @@ import { LucideChevronLeft, LucideChevronRight } from "lucide-react";
 import ButtonPrimary from "../features/RRButton";
 import { Skeleton } from "../ui/skeleton";
 
+const columns: ColumnDef<ReleaseItemModel>[] = [
+  { accessorKey: "title", header: "Title" },
+  { accessorKey: "is_licensed", header: "Licensed" },
+  { accessorKey: "release_date", header: "Released" },
+  { accessorKey: "publisher_name", header: "Publisher" },
+  { accessorKey: "platform_name", header: "Platform" },
+  { accessorKey: "market_tag", header: "Market" },
+];
+
 interface ReleasesTableProps {
   data: ReleasesModel;
   isLoading: boolean;
@@ -38,11 +47,15 @@ const ReleasesTable = ({
 
   return (
     <div>
-      <DataTable
-        table={table}
-        isLoading={isLoading}
-        recordPerPage={recordPerPage}
-      />
+      {!isLoading && data.length === 0 ? (
+        <NoResultsPlaceholder />
+      ) : (
+        <DataTable
+          table={table}
+          isLoading={isLoading}
+          recordPerPage={recordPerPage}
+        />
+      )}
       <div className="mt-2 flex gap-2">
         <ButtonPrimary
           onClick={() => onPageChange(pageIndex - 1)}
@@ -127,11 +140,8 @@ const DataTable = ({ table, isLoading, recordPerPage }: DataTableProps) => {
   );
 };
 
-const columns: ColumnDef<ReleaseItemModel>[] = [
-  { accessorKey: "title", header: "Title" },
-  { accessorKey: "is_licensed", header: "Licensed" },
-  { accessorKey: "release_date", header: "Released" },
-  { accessorKey: "publisher_name", header: "Publisher" },
-  { accessorKey: "platform_name", header: "Platform" },
-  { accessorKey: "market_tag", header: "Market" },
-];
+const NoResultsPlaceholder = () => {
+  return (
+    <div className="rounded-lg bg-white p-3 text-gray-500">No Results</div>
+  );
+};

@@ -6,6 +6,7 @@ export function useReleases(
   pageSize = 30,
   pageIndex: number = 0,
   cursors: number[],
+  keyword: string,
   setPageIndex: (pageIndex: number) => void,
   setCursors: (cursors: number[]) => void,
 ) {
@@ -37,6 +38,7 @@ export function useReleases(
       const { releases: newReleases } = await getReleases({
         pageSize,
         cursorId,
+        keyword,
         sortBy,
         filters,
       });
@@ -47,7 +49,7 @@ export function useReleases(
     } finally {
       setLoading(false);
     }
-  }, [pageSize, cursorId, sortBy, filters]);
+  }, [pageSize, cursorId, keyword, sortBy, filters]);
 
   // Automatically fetch releases when dependencies change
   useEffect(() => {

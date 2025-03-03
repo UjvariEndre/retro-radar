@@ -3,44 +3,9 @@
 import { SelectOptionsModel } from "@/lib/models/ui.models";
 import { LucideSlidersHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import ButtonPrimary from "../features/RRButton";
 import RRInput from "../features/RRInput";
 import RRSelect from "../features/RRSelect";
-
-interface SearchBarProps {
-  onPerPageChange: (value: string) => void;
-}
-
-export default function SearchBar({ onPerPageChange }: SearchBarProps) {
-  const [query, setQuery] = useState<string>("");
-  const router = useRouter();
-
-  const handleSearch = (event: React.FormEvent) => {
-    event.preventDefault();
-    router.push(`/search?query=${encodeURIComponent(query)}`);
-  };
-
-  return (
-    <form onSubmit={handleSearch} className="mb-2 flex gap-2">
-      <RRInput
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search games..."
-      />
-      <RRSelect
-        options={options}
-        onChange={onPerPageChange}
-        defaultValue="30"
-      />
-      <ButtonPrimary type="button" variant="secondary">
-        <LucideSlidersHorizontal />
-      </ButtonPrimary>
-      <ButtonPrimary type="submit">Search</ButtonPrimary>
-    </form>
-  );
-}
 
 const options: SelectOptionsModel = [
   {
@@ -60,3 +25,42 @@ const options: SelectOptionsModel = [
     title: "100 Results Per Page",
   },
 ];
+
+interface SearchBarProps {
+  keyword: string;
+  setKeyword: (keyword: string) => void;
+  onPerPageChange: (value: string) => void;
+}
+
+export default function SearchBar({
+  keyword,
+  setKeyword,
+  onPerPageChange,
+}: SearchBarProps) {
+  const router = useRouter();
+
+  const handleSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+    router.push(`/search?query=${encodeURIComponent(keyword)}`);
+  };
+
+  return (
+    <form onSubmit={handleSearch} className="mb-2 flex gap-2">
+      <RRInput
+        type="text"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value ?? "")}
+        placeholder="Search games..."
+      />
+      <RRSelect
+        options={options}
+        onChange={onPerPageChange}
+        defaultValue="30"
+      />
+      <ButtonPrimary type="button" variant="secondary">
+        <LucideSlidersHorizontal />
+        Filters
+      </ButtonPrimary>
+    </form>
+  );
+}

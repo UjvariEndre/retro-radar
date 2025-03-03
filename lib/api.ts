@@ -6,11 +6,13 @@ import { ReleaseItemModel, ReleasesModel } from "./models/releases.model";
 export async function getReleases({
   pageSize = 30,
   cursorId = 1,
+  keyword = "",
   isAscending = false,
   filters = {},
 }: {
   pageSize?: number;
   cursorId?: CommonIntIdModel;
+  keyword?: string;
   sortBy?: string;
   isAscending?: boolean;
   filters?: Record<string, string | number | null>;
@@ -36,6 +38,10 @@ export async function getReleases({
 
   if (cursorId) {
     query.lte("id", cursorId);
+  }
+
+  if (keyword && keyword.length > 0) {
+    query.ilike("title", `%${keyword}%`);
   }
 
   // Apply Filters Dynamically
