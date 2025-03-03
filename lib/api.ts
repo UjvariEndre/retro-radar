@@ -73,8 +73,9 @@ export async function getReleases({
   return { releases: transformedData, total: count ?? 0 };
 }
 
-export async function getPaginationCursors(pageSize: number) {
+export async function getPaginationCursors(pageSize: number, keyword?: string) {
   const { data, error } = await supabase.rpc("fetch_cursor_keys", {
+    keyword: keyword ?? "",
     page_size: pageSize,
   });
 

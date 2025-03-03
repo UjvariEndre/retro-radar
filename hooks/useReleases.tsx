@@ -20,12 +20,12 @@ export function useReleases(
 
   useEffect(() => {
     async function loadCursors() {
-      const cursorList = await getPaginationCursors(pageSize);
+      const cursorList = await getPaginationCursors(pageSize, keyword);
       setCursors(cursorList);
       setPageIndex(0);
     }
     loadCursors();
-  }, [pageSize, setPageIndex, setCursors]); // Reload when the user changes page size
+  }, [pageSize, keyword, setPageIndex, setCursors]); // Reload when the user changes page size
 
   const cursorId = useMemo(() => cursors[pageIndex], [cursors, pageIndex]);
 

@@ -89,7 +89,7 @@ const DataTable = ({ table, isLoading, recordPerPage }: DataTableProps) => {
     <table className="w-full border-collapse overflow-hidden rounded-lg border bg-white text-sm">
       <thead className="bg-slate-100 text-left text-slate-700">
         {isLoading ? (
-          <tr>
+          <tr key="header">
             {columns.map((col) => {
               return (
                 <th key={col.id} className="p-2">
