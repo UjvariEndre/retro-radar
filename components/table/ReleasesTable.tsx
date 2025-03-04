@@ -8,10 +8,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { LucideChevronLeft, LucideChevronRight } from "lucide-react";
-import ButtonPrimary from "../features/RRButton";
+import { v4 as uuidv4 } from "uuid";
+import RRButton from "../features/RRButton";
 import { Skeleton } from "../ui/skeleton";
 
-const columns: ColumnDef<ReleaseItemModel>[] = [
+const COLUMNS: ColumnDef<ReleaseItemModel>[] = [
   { accessorKey: "title", header: "Title" },
   { accessorKey: "is_licensed", header: "Licensed" },
   { accessorKey: "release_date", header: "Released" },
@@ -40,7 +41,7 @@ const ReleasesTable = ({
   // Hooks
   const table = useReactTable({
     data: isLoading ? Array(10).fill({}) : data,
-    columns,
+    columns: COLUMNS,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
   });
@@ -57,21 +58,21 @@ const ReleasesTable = ({
         />
       )}
       <div className="mt-2 flex gap-2">
-        <ButtonPrimary
+        <RRButton
           onClick={() => onPageChange(pageIndex - 1)}
           disabled={pageIndex === 0}
           variant="secondary"
         >
           <LucideChevronLeft />
           Prev
-        </ButtonPrimary>
-        <ButtonPrimary
+        </RRButton>
+        <RRButton
           onClick={() => onPageChange(pageIndex + 1)}
           disabled={pageIndex >= pageCount - 1}
           variant="secondary"
         >
           Next <LucideChevronRight />
-        </ButtonPrimary>
+        </RRButton>
       </div>
     </div>
   );
@@ -89,10 +90,10 @@ const DataTable = ({ table, isLoading, recordPerPage }: DataTableProps) => {
     <table className="w-full border-collapse overflow-hidden rounded-lg border bg-white text-sm">
       <thead className="bg-slate-100 text-left text-slate-700">
         {isLoading ? (
-          <tr key="header">
-            {columns.map((col) => {
+          <tr key={uuidv4()}>
+            {COLUMNS.map(() => {
               return (
-                <th key={col.id} className="p-2">
+                <th key={uuidv4()} className="p-2">
                   <Skeleton className="h-5 w-32" />
                 </th>
               );
@@ -117,9 +118,9 @@ const DataTable = ({ table, isLoading, recordPerPage }: DataTableProps) => {
         {isLoading
           ? Array.from({ length: recordPerPage }).map((_, index) => (
               <tr key={index} className="border-b border-slate-100">
-                {columns.map((col) => {
+                {COLUMNS.map(() => {
                   return (
-                    <td key={col.id} className="p-2">
+                    <td key={uuidv4()} className="p-2">
                       <Skeleton className="h-5 w-32" />
                     </td>
                   );

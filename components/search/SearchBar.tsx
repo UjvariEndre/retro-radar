@@ -1,13 +1,12 @@
 "use client";
 
 import { SelectOptionsModel } from "@/lib/models/ui.models";
-import { LucideSlidersHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
-import ButtonPrimary from "../features/RRButton";
 import RRInput from "../features/RRInput";
 import RRSelect from "../features/RRSelect";
+import SearchFiltersModal from "./SearchFiltersModal";
 
-const options: SelectOptionsModel = [
+const OPTIONS: SelectOptionsModel = [
   {
     value: "15",
     title: "15 Results Per Page",
@@ -53,14 +52,12 @@ export default function SearchBar({
         placeholder="Search games..."
       />
       <RRSelect
-        options={options}
+        options={OPTIONS}
         onChange={onPerPageChange}
         defaultValue="30"
+        className="w-[300px]"
       />
-      <ButtonPrimary type="button" variant="secondary">
-        <LucideSlidersHorizontal />
-        Filters
-      </ButtonPrimary>
+      <SearchFiltersModal />
     </form>
   );
 }

@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
-import { CommonIntIdModel } from "./models/common.models";
+import { CommonIntIdModel } from "./models/common.model";
 import { dbReleasesSchema } from "./models/db";
 import { ReleaseItemModel, ReleasesModel } from "./models/releases.model";
 

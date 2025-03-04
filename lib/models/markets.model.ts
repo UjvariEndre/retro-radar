@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CommonIntIdSchema, CommonNameSchema } from "./common.models";
+import { CommonIntIdSchema, CommonNameSchema } from "./common.model";
 
 export const MarketTagSchema = z.string();
 export type MarketTagModel = z.infer<typeof MarketTagSchema>;

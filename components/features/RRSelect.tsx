@@ -1,4 +1,5 @@
 import { SelectOptionsModel } from "@/lib/models/ui.models";
+import { cn } from "@/lib/utils";
 import { SelectProps } from "@radix-ui/react-select";
 import {
   Select,
@@ -10,15 +11,19 @@ import {
 
 interface RRSelectProps extends SelectProps {
   options: SelectOptionsModel;
+  placeholder?: string;
+  className?: string;
   onChange: (value: string) => void;
 }
 
 const RRSelect = (props: RRSelectProps) => {
-  const { options, onChange } = props;
+  const { options, placeholder, className, onChange } = props;
   return (
     <Select {...props} onValueChange={onChange}>
-      <SelectTrigger className="h-11 w-[300px] rounded-lg bg-white">
-        <SelectValue placeholder="Theme" />
+      <SelectTrigger
+        className={cn("h-11 w-full rounded-lg bg-white", className)}
+      >
+        <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         {options.map((option, index) => (

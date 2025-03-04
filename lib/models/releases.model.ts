@@ -4,7 +4,7 @@ import {
   CommonNameSchema,
   CommonTimestampSchema,
   WikiTagSchema,
-} from "./common.models";
+} from "./common.model";
 import { MarketTagSchema } from "./markets.model";
 
 export const ReleaseIsLicensedSchema = z.boolean();
