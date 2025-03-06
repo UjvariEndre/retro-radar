@@ -8,6 +8,7 @@ import {
 import RRSelect from "../features/RRSelect";
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -21,12 +22,15 @@ interface SelectFieldProps<
   form: UseFormReturn;
   options: SelectOptionsModel;
   title?: string;
+  desc?: string;
   placeholder?: string;
+  showClearButton?: boolean;
   render?: ControllerProps<TFieldValues, TName>["render"];
 }
 
 const SelectField = (props: SelectFieldProps) => {
-  const { form, name, title, options, placeholder } = props;
+  const { form, name, title, desc, options, placeholder, showClearButton } =
+    props;
 
   return (
     <FormField
@@ -36,8 +40,14 @@ const SelectField = (props: SelectFieldProps) => {
       render={({ field }) => (
         <FormItem className="w-full space-y-0">
           <FormLabel>{title}</FormLabel>
+          <FormDescription>{desc}</FormDescription>
           <FormControl>
-            <RRSelect {...field} options={options} placeholder={placeholder} />
+            <RRSelect
+              {...field}
+              options={options}
+              placeholder={placeholder}
+              showClearButton={showClearButton}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

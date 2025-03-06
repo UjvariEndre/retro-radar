@@ -1,5 +1,6 @@
 "use client";
 
+import { FilterProvider } from "@/context/Filter.context";
 import { useReleases } from "@/hooks/useReleases";
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
@@ -7,6 +8,15 @@ import ReleasesTable from "../table/ReleasesTable";
 import SearchBar from "./SearchBar";
 
 const SearchTable = () => {
+  return (
+    <FilterProvider>
+      <Component />
+    </FilterProvider>
+  );
+};
+export default SearchTable;
+
+const Component = () => {
   // Hooks
   const [recordPerPage, setRecordPerPage] = useState<number>(30);
   const [pageIndex, setPageIndex] = useState<number>(0);
@@ -40,4 +50,3 @@ const SearchTable = () => {
     </>
   );
 };
-export default SearchTable;

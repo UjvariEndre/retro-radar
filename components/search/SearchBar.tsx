@@ -53,7 +53,7 @@ export default function SearchBar({
       />
       <RRSelect
         options={OPTIONS}
-        onChange={onPerPageChange}
+        onChange={(value) => onPerPageChange(value ?? "")}
         defaultValue="30"
         className="w-[300px]"
       />

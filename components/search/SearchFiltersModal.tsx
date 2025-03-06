@@ -1,9 +1,9 @@
 import { LucideSlidersHorizontal } from "lucide-react";
+import { useState } from "react";
 import RRButton from "../features/RRButton";
 import SearchFilterForm from "../forms/SearchFilterForm";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -13,15 +13,17 @@ import {
 } from "../ui/dialog";
 
 const SearchFiltersModal = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <RRButton variant="secondary">
           <LucideSlidersHorizontal />
           Filters
         </RRButton>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Refine Your Search</DialogTitle>
           <DialogDescription>
@@ -34,14 +36,17 @@ const SearchFiltersModal = () => {
           <SearchFilterForm
             footer={
               <DialogFooter>
-                <DialogClose asChild>
-                  <RRButton type="button" variant="secondary">
-                    Close
-                  </RRButton>
-                </DialogClose>
+                <RRButton
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Cancel
+                </RRButton>
                 <RRButton type="submit">Apply Filters</RRButton>
               </DialogFooter>
             }
+            onClose={() => setIsOpen(false)}
           />
         </div>
       </DialogContent>
