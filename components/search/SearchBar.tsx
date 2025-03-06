@@ -27,12 +27,14 @@ const OPTIONS: SelectOptionsModel = [
 
 interface SearchBarProps {
   keyword: string;
+  recordPerPage: number;
   setKeyword: (keyword: string) => void;
   onPerPageChange: (value: string) => void;
 }
 
 export default function SearchBar({
   keyword,
+  recordPerPage,
   setKeyword,
   onPerPageChange,
 }: SearchBarProps) {
@@ -54,7 +56,7 @@ export default function SearchBar({
       <RRSelect
         options={OPTIONS}
         onChange={(value) => onPerPageChange(value ?? "")}
-        defaultValue="30"
+        value={recordPerPage.toString()}
         className="w-[300px]"
       />
       <SearchFiltersModal />

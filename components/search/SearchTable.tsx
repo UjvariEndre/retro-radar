@@ -36,6 +36,7 @@ const Component = () => {
     <>
       <SearchBar
         keyword={keyword}
+        recordPerPage={recordPerPage}
         setKeyword={setKeyword}
         onPerPageChange={(value) => setRecordPerPage(Number(value))}
       />
