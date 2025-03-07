@@ -1,5 +1,7 @@
+import { useFilters } from "@/hooks/useFilters";
 import { LucideSlidersHorizontal } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import ButtonIndicator from "../features/ButtonIndicator";
 import RRButton from "../features/RRButton";
 import SearchFilterForm from "../forms/SearchFilterForm";
 import {
@@ -14,6 +16,11 @@ import {
 
 const SearchFiltersModal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { filters } = useFilters();
+
+  const values = useMemo(() => {
+    return Object.values(filters).filter((f) => f !== undefined && f !== "");
+  }, [filters]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -21,6 +28,7 @@ const SearchFiltersModal = () => {
         <RRButton variant="secondary">
           <LucideSlidersHorizontal />
           Filters
+          {values.length > 0 && <ButtonIndicator />}
         </RRButton>
       </DialogTrigger>
       <DialogContent className="sm:max-w-xl">
