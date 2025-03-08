@@ -14,6 +14,9 @@ const RRButton = (props: RRButtonProps) => {
       variant =
         "bg-slate-100 text-slate-800 hover:bg-slate-100 hover:text-amber-400";
       break;
+    case "outline":
+      variant = "bg-white text-slate-800 hover:text-amber-400 hover:bg-white";
+      break;
     case "destructive":
       variant =
         "bg-slate-100 text-destructive hover:bg-slate-100 hover:text-amber-400 p-3";
