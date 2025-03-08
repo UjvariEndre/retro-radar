@@ -1,58 +1,49 @@
 import { supabase } from "@/lib/supabaseClient";
-import { CommonIntIdModel } from "./models/common.model";
 import { dbReleasesSchema } from "./models/db";
-import { ReleaseItemModel, ReleasesModel } from "./models/releases.model";
+import { PublishersModel, PublishersSchema } from "./models/publishers.model";
+import { ReleasesModel } from "./models/releases.model";
 
 export async function getReleases({
   pageSize = 30,
-  cursorId = 1,
+  pageIndex = 0,
   keyword = "",
+  publisherId,
   isAscending = false,
-  filters = {},
 }: {
   pageSize?: number;
-  cursorId?: CommonIntIdModel;
+  pageIndex?: number;
   keyword?: string;
+  publisherId?: number | null;
   sortBy?: string;
   isAscending?: boolean;
-  filters?: Record<string, string | number | null>;
 }) {
-  let query = supabase
+  const query = supabase
     .from("releases")
     .select(
       `
-        id,
-        created_at,
-        title,
-        release_date,
-        wiki_tag,
-        is_licensed,
-        market_tag:market_id (tag),
-        platform_name:platform_id (name),
-        publisher_name:publisher_id (name),
-        market_id
-      `,
+      id,
+      created_at,
+      title,
+      release_date,
+      wiki_tag,
+      is_licensed,
+      publisher_id,
+      publisher_name:publisher_id (name),
+      market_id,
+      market_tag:market_id (tag),
+      platform_id,
+      platform_name:platform_id (name)
+    `,
     )
     .order("created_at", { ascending: isAscending })
-    .limit(pageSize);
-
-  if (cursorId) {
-    query.lte("id", cursorId);
+    .range(pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
+  if (keyword && keyword.length > 0) query.ilike("title", `%${keyword}%`);
+  if (publisherId) {
+    query.eq("publisher_id", publisherId);
   }
-
-  if (keyword && keyword.length > 0) {
-    query.ilike("title", `%${keyword}%`);
-  }
-
-  // Apply Filters Dynamically
-  Object.entries(filters).forEach(([key, value]) => {
-    if (value !== null && value !== "") {
-      query = query.eq(key, value); // Exact match filtering
-    }
-  });
 
   // Execute query
-  const { data, count, error } = await query;
+  const { data, error } = await query;
   if (error) throw new Error("Supabase error: ", error);
 
   // Validate and transform data
@@ -70,19 +61,43 @@ export async function getReleases({
     market_tag: release.market_tag?.tag ?? undefined,
   }));
 
-  return { releases: transformedData, total: count ?? 0 };
+  return { releases: transformedData };
 }
 
-export async function getPaginationCursors(pageSize: number, keyword?: string) {
-  const { data, error } = await supabase.rpc("fetch_cursor_keys", {
-    keyword: keyword ?? "",
-    page_size: pageSize,
-  });
+export async function getCount(
+  publisherId: number | null,
+  isAscending: boolean,
+  keyword?: string,
+) {
+  const query = supabase
+    .from("releases")
+    .select("id", { count: "exact", head: true });
+  if (keyword && keyword.length > 0) query.ilike("title", `%${keyword}%`);
+  if (publisherId) query.eq("publisher_id", publisherId);
 
+  // Execute Supabase query
+  const { count, error } = await query;
   if (error) {
-    console.error("Error fetching pagination cursors:", error);
-    return [];
+    console.error("Error fetching count:", error);
   }
+  return count;
+}
 
-  return data.map((item: ReleaseItemModel) => item.id); // Returns an array of IDs
+export async function getPublishers() {
+  const query = supabase.from("publishers").select("id, name");
+
+  // Execute query
+  const { data, error } = await query;
+  if (error) throw new Error("Supabase error: ", error);
+
+  // Validate and transform data
+  const parsedData = await PublishersSchema.safeParse(data);
+  if (!parsedData.success) throw new Error("Invalid data format from Supabase");
+
+  const transformedData: PublishersModel = parsedData.data.map((publisher) => ({
+    id: publisher.id,
+    name: publisher.name,
+  }));
+
+  return { publishers: transformedData };
 }

@@ -1,33 +1,17 @@
-import { getPaginationCursors, getReleases } from "@/lib/api";
+import { getCount, getReleases } from "@/lib/api";
 import { ReleasesModel } from "@/lib/models/releases.model";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useFilters } from "./useFilters";
 
-export function useReleases(
-  pageSize = 30,
-  pageIndex: number = 0,
-  cursors: number[],
-  keyword: string,
-  setPageIndex: (pageIndex: number) => void,
-  setCursors: (cursors: number[]) => void,
-) {
+export function useReleases() {
   const [releases, setReleases] = useState<ReleasesModel>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [filters, setFilters] = useState<
-    Record<string, string | number | null>
-  >({});
+  const [count, setCount] = useState<number>(0);
   const [sortBy, setSortBy] = useState("created_at");
+  const { filters, pageSize, pageIndex, keyword } = useFilters();
 
-  useEffect(() => {
-    async function loadCursors() {
-      const cursorList = await getPaginationCursors(pageSize, keyword);
-      setCursors(cursorList);
-      setPageIndex(0);
-    }
-    loadCursors();
-  }, [pageSize, keyword, setPageIndex, setCursors]); // Reload when the user changes page size
-
-  const cursorId = useMemo(() => cursors[pageIndex], [cursors, pageIndex]);
+  const publisherId = filters.publisher?.id ?? null; // Extract primitive values
 
   // Fetch releases with error handling
   const fetchReleases = useCallback(async () => {
@@ -37,31 +21,47 @@ export function useReleases(
     try {
       const { releases: newReleases } = await getReleases({
         pageSize,
-        cursorId,
+        pageIndex,
         keyword,
+        publisherId,
         sortBy,
-        filters,
       });
-
       setReleases(newReleases);
     } catch (error) {
       setError(`Failed to fetch releases: ${error}`);
     } finally {
       setLoading(false);
     }
-  }, [pageSize, cursorId, keyword, sortBy, filters]);
+  }, [pageSize, pageIndex, keyword, publisherId, sortBy]);
 
   // Automatically fetch releases when dependencies change
   useEffect(() => {
     fetchReleases();
   }, [fetchReleases]);
 
+  // Fetch release count separately
+  useEffect(() => {
+    const fetchCount = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const newCount = await getCount(publisherId, false, keyword);
+        setCount(newCount ?? 0);
+      } catch (error) {
+        setError(`Failed to fetch releases count: ${error}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCount();
+  }, [keyword, publisherId]);
+
   return {
     releases,
     loading,
     error,
-    filters,
-    setFilters,
+    count,
     sortBy,
     setSortBy,
   };
