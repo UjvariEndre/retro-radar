@@ -1,5 +1,7 @@
 "use client";
 
+import { useFilters } from "@/hooks/useFilters";
+import { useReleases } from "@/hooks/useReleases";
 import { ReleaseItemModel, ReleasesModel } from "@/lib/models/releases.model";
 import {
   ColumnDef,
@@ -21,26 +23,12 @@ const COLUMNS: ColumnDef<ReleaseItemModel>[] = [
   { accessorKey: "market_tag", header: "Market" },
 ];
 
-interface ReleasesTableProps {
-  data: ReleasesModel;
-  isLoading: boolean;
-  recordPerPage: number;
-  pageIndex: number;
-  pageCount: number;
-  onPageChange: (pageIndex: number) => void;
-}
-
-const ReleasesTable = ({
-  data,
-  isLoading,
-  recordPerPage,
-  pageIndex,
-  pageCount,
-  onPageChange,
-}: ReleasesTableProps) => {
+const ReleasesTable = () => {
   // Hooks
+  const { releases, loading, count } = useReleases();
+  const { pageSize, pageIndex, setPageIndex } = useFilters();
   const table = useReactTable({
-    data: isLoading ? Array(10).fill({}) : data,
+    data: loading ? Array(10).fill({}) : releases,
     columns: COLUMNS,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
@@ -48,18 +36,14 @@ const ReleasesTable = ({
 
   return (
     <div>
-      {!isLoading && data.length === 0 ? (
+      {!loading && releases.length === 0 ? (
         <NoResultsPlaceholder />
       ) : (
-        <DataTable
-          table={table}
-          isLoading={isLoading}
-          recordPerPage={recordPerPage}
-        />
+        <DataTable table={table} isLoading={loading} recordPerPage={pageSize} />
       )}
       <div className="mt-2 flex gap-2">
         <RRButton
-          onClick={() => onPageChange(pageIndex - 1)}
+          onClick={() => setPageIndex(pageIndex - 1)}
           disabled={pageIndex === 0}
           variant="secondary"
         >
@@ -67,8 +51,8 @@ const ReleasesTable = ({
           Prev
         </RRButton>
         <RRButton
-          onClick={() => onPageChange(pageIndex + 1)}
-          disabled={pageIndex >= pageCount - 1}
+          onClick={() => setPageIndex(pageIndex + 1)}
+          disabled={(pageIndex + 1) * pageSize >= count}
           variant="secondary"
         >
           Next <LucideChevronRight />

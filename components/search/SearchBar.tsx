@@ -1,5 +1,6 @@
 "use client";
 
+import { useFilters } from "@/hooks/useFilters";
 import { SelectOptionsModel } from "@/lib/models/ui.models";
 import { useRouter } from "next/navigation";
 import RRInput from "../features/RRInput";
@@ -25,20 +26,9 @@ const OPTIONS: SelectOptionsModel = [
   },
 ];
 
-interface SearchBarProps {
-  keyword: string;
-  recordPerPage: number;
-  setKeyword: (keyword: string) => void;
-  onPerPageChange: (value: string) => void;
-}
-
-export default function SearchBar({
-  keyword,
-  recordPerPage,
-  setKeyword,
-  onPerPageChange,
-}: SearchBarProps) {
+export default function SearchBar() {
   const router = useRouter();
+  const { keyword, pageSize, setKeyword, setPageSize } = useFilters();
 
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
@@ -55,8 +45,8 @@ export default function SearchBar({
       />
       <RRSelect
         options={OPTIONS}
-        onChange={(value) => onPerPageChange(value ?? "")}
-        value={recordPerPage.toString()}
+        onChange={(value) => setPageSize(Number(value))}
+        value={pageSize.toString()}
         className="w-[300px]"
       />
       <SearchFiltersModal />

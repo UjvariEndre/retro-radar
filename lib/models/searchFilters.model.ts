@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CommonNameSchema } from "./common.model";
+import { PublisherItemSchema } from "./publishers.model";
 
 export const YearSchema = z
   .string()
@@ -14,7 +15,7 @@ export type LicenseStatusModel = z.infer<typeof LicenseStatusSchema>;
 
 export const SearchFilterSchema = z.object({
   platform_name: CommonNameSchema.optional(),
-  publisher_name: CommonNameSchema.optional(),
+  publisher: PublisherItemSchema.optional(),
   region_name: CommonNameSchema.optional(),
   license_status: LicenseStatusSchema.optional(),
   date_from: YearSchema.optional(),
