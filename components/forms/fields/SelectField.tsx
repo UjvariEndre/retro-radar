@@ -5,7 +5,7 @@ import {
   FieldValues,
   UseFormReturn,
 } from "react-hook-form";
-import RRSelect from "../features/RRSelect";
+import RRSelect from "../../features/RRSelect";
 import {
   FormControl,
   FormDescription,
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
+} from "../../ui/form";
 
 interface SelectFieldProps<
   TFieldValues extends FieldValues = FieldValues,
