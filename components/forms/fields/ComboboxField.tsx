@@ -30,7 +30,16 @@ interface ComboboxFieldProps<
 }
 
 const ComboboxField = (props: ComboboxFieldProps) => {
-  const { form, name, title, desc, options, placeholder, triggerText } = props;
+  const {
+    form,
+    name,
+    title,
+    desc,
+    options,
+    placeholder,
+    triggerText,
+    showClearButton,
+  } = props;
 
   return (
     <FormField
@@ -48,6 +57,7 @@ const ComboboxField = (props: ComboboxFieldProps) => {
               placeholder={placeholder}
               triggerText={triggerText}
               value={field.value}
+              showClearButton={showClearButton}
             />
           </FormControl>
           <FormMessage />

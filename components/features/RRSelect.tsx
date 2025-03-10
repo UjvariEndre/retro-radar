@@ -1,7 +1,6 @@
 import { SelectOptionsModel } from "@/lib/models/ui.models";
 import { cn } from "@/lib/utils";
 import { SelectProps } from "@radix-ui/react-select";
-import { LucideMinusCircle } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -9,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import RRButton from "./RRButton";
+import RemoveButton from "./RemoveButton";
 
 interface RRSelectProps extends SelectProps {
   options: SelectOptionsModel;
@@ -45,9 +44,7 @@ const RRSelect = (props: RRSelectProps) => {
         </SelectContent>
       </Select>
       {showClearButton && value && (
-        <RRButton variant="destructive" onClick={() => onChange("")}>
-          <LucideMinusCircle style={{ width: "1.5rem", height: "1.5rem" }} />
-        </RRButton>
+        <RemoveButton onChange={() => onChange("")} />
       )}
     </div>
   );

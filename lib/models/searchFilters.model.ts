@@ -15,7 +15,7 @@ export type LicenseStatusModel = z.infer<typeof LicenseStatusSchema>;
 
 export const SearchFilterSchema = z.object({
   platform_name: CommonNameSchema.optional(),
-  publisher: PublisherItemSchema.optional(),
+  publisher: PublisherItemSchema.or(z.literal("")).optional(),
   region_name: CommonNameSchema.optional(),
   license_status: LicenseStatusSchema.optional(),
   date_from: YearSchema.optional(),
