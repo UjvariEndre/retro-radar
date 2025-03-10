@@ -3,7 +3,7 @@
 import { useFilters } from "@/hooks/useFilters";
 import { SelectOptionsModel } from "@/lib/models/ui.models";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import RRInput from "../features/RRInput";
 import RRSelect from "../features/RRSelect";
 import SearchFiltersModal from "./SearchFiltersModal";
@@ -17,7 +17,8 @@ const OPTIONS: SelectOptionsModel = [
 
 export default function SearchBar() {
   const router = useRouter();
-  const { keyword, pageSize, setKeyword, setPageSize } = useFilters();
+  const { keyword, pageSize, setKeyword, setPageSize, setPageIndex } =
+    useFilters();
   const [debouncedKeyword, setDebouncedKeyword] = useState(keyword);
 
   // Debounce effect
@@ -31,22 +32,29 @@ export default function SearchBar() {
     };
   }, [debouncedKeyword, setKeyword]);
 
-  const handleSearch = (event: React.FormEvent) => {
-    event.preventDefault();
-    router.push(`/search?query=${encodeURIComponent(debouncedKeyword)}`);
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value ?? "";
+    setDebouncedKeyword(value);
+    router.push(`/search?query=${encodeURIComponent(value)}`);
+    setPageIndex(0);
+  };
+
+  const handlePageSizeChange = (value: string | undefined) => {
+    setPageSize(Number(value));
+    setPageIndex(0);
   };
 
   return (
-    <form onSubmit={handleSearch} className="mb-2 flex gap-2">
+    <form className="mb-2 flex gap-2">
       <RRInput
         type="text"
         value={debouncedKeyword}
-        onChange={(e) => setDebouncedKeyword(e.target.value ?? "")}
+        onChange={(e) => handleSearch(e)}
         placeholder="Search games..."
       />
       <RRSelect
         options={OPTIONS}
-        onChange={(value) => setPageSize(Number(value))}
+        onChange={handlePageSizeChange}
         value={pageSize.toString()}
         className="w-[300px]"
       />
