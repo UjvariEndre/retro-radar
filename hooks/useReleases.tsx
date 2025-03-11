@@ -1,6 +1,6 @@
 import { getCount, getReleases } from "@/lib/api";
 import { ReleasesModel } from "@/lib/models/releases.model";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFilters } from "./useFilters";
 
 export function useReleases() {
@@ -12,6 +12,17 @@ export function useReleases() {
   const { filters, pageSize, pageIndex, keyword } = useFilters();
 
   const publisherId = filters.publisher ? filters.publisher.id : null;
+  const platformId = filters.platform ? filters.platform.id : null;
+  const regionId = filters.region ? filters.region.id : null;
+  const isLicensed = filters.license_status
+    ? filters.license_status === "licensed_only"
+    : null;
+  const dateRange = useMemo(() => {
+    const dateFrom = filters.date_from;
+    const dateTo = filters.date_to;
+    if (!dateFrom && !dateTo) return null;
+    return { dateFrom: filters.date_from, dateTo: filters.date_to };
+  }, [filters.date_from, filters.date_to]);
 
   // Fetch releases with error handling
   const fetchReleases = useCallback(async () => {
@@ -24,6 +35,10 @@ export function useReleases() {
         pageIndex,
         keyword,
         publisherId,
+        platformId,
+        regionId,
+        isLicensed,
+        dateRange,
         sortBy,
       });
       setReleases(newReleases);
@@ -32,7 +47,17 @@ export function useReleases() {
     } finally {
       setLoading(false);
     }
-  }, [pageSize, pageIndex, keyword, publisherId, sortBy]);
+  }, [
+    pageSize,
+    pageIndex,
+    keyword,
+    publisherId,
+    platformId,
+    regionId,
+    isLicensed,
+    dateRange,
+    sortBy,
+  ]);
 
   // Automatically fetch releases when dependencies change
   useEffect(() => {
@@ -45,7 +70,15 @@ export function useReleases() {
       setLoading(true);
       setError(null);
       try {
-        const newCount = await getCount(publisherId, false, keyword);
+        const newCount = await getCount(
+          publisherId,
+          platformId,
+          regionId,
+          isLicensed,
+          dateRange,
+          false,
+          keyword,
+        );
         setCount(newCount ?? 0);
       } catch (error) {
         setError(`Failed to fetch releases count: ${error}`);
@@ -55,7 +88,7 @@ export function useReleases() {
     };
 
     fetchCount();
-  }, [keyword, publisherId]);
+  }, [keyword, publisherId, platformId, regionId, isLicensed, dateRange]);
 
   return {
     releases,

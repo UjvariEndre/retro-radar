@@ -8,12 +8,23 @@ export async function getReleases({
   pageIndex = 0,
   keyword = "",
   publisherId,
+  platformId,
+  regionId,
+  isLicensed,
+  dateRange,
   isAscending = false,
 }: {
   pageSize?: number;
   pageIndex?: number;
   keyword?: string;
   publisherId?: number | null;
+  platformId?: number | null;
+  regionId?: number | null;
+  isLicensed?: boolean | null;
+  dateRange?: {
+    dateFrom: string | undefined;
+    dateTo: string | undefined;
+  } | null;
   sortBy?: string;
   isAscending?: boolean;
 }) {
@@ -38,8 +49,16 @@ export async function getReleases({
     .order("created_at", { ascending: isAscending })
     .range(pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
   if (keyword && keyword.length > 0) query.ilike("title", `%${keyword}%`);
-  if (publisherId) {
-    query.eq("publisher_id", publisherId);
+  if (publisherId) query.eq("publisher_id", publisherId);
+  if (platformId) query.eq("platform_id", platformId);
+  if (regionId) query.eq("region_id", regionId);
+  if (isLicensed !== null && isLicensed !== undefined)
+    query.eq("is_licensed", isLicensed);
+  if (dateRange) {
+    if (dateRange.dateFrom)
+      query.gte("release_date", `${dateRange.dateFrom}-01-01`);
+    if (dateRange.dateTo)
+      query.lte("release_date", `${dateRange.dateTo}-12-31`);
   }
 
   // Execute query
@@ -66,6 +85,13 @@ export async function getReleases({
 
 export async function getCount(
   publisherId: number | null,
+  platformId: number | null,
+  regionId: number | null,
+  isLicensed: boolean | null,
+  dateRange: {
+    dateFrom: string | undefined;
+    dateTo: string | undefined;
+  } | null,
   isAscending: boolean,
   keyword?: string,
 ) {
@@ -74,6 +100,16 @@ export async function getCount(
     .select("id", { count: "exact", head: true });
   if (keyword && keyword.length > 0) query.ilike("title", `%${keyword}%`);
   if (publisherId) query.eq("publisher_id", publisherId);
+  if (platformId) query.eq("platform_id", platformId);
+  if (regionId) query.eq("region_id", regionId);
+  if (isLicensed !== null && isLicensed !== undefined)
+    query.eq("is_licensed", isLicensed);
+  if (dateRange) {
+    if (dateRange.dateFrom)
+      query.gte("release_date", `${dateRange.dateFrom}-01-01`);
+    if (dateRange.dateTo)
+      query.lte("release_date", `${dateRange.dateTo}-12-31`);
+  }
 
   // Execute Supabase query
   const { count, error } = await query;
