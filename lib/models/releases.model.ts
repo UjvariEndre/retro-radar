@@ -5,7 +5,7 @@ import {
   CommonTimestampSchema,
   WikiTagSchema,
 } from "./common.model";
-import { MarketTagSchema } from "./markets.model";
+import { RegionTagSchema } from "./regions.model";
 
 export const ReleaseIsLicensedSchema = z.boolean();
 export type ReleaseIsLicensedModel = z.infer<typeof ReleaseIsLicensedSchema>;
@@ -35,7 +35,7 @@ export const ReleaseItemSchema = z.object({
   is_licensed: ReleaseIsLicensedSchema.optional(),
   publisher_name: CommonNameSchema.optional(),
   release_date: ReleaseReleaseDateSchema.optional(),
-  market_tag: MarketTagSchema.optional(),
+  region_tag: RegionTagSchema.optional(),
 });
 export type ReleaseItemModel = z.infer<typeof ReleaseItemSchema>;
 

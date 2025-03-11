@@ -20,7 +20,7 @@ const COLUMNS: ColumnDef<ReleaseItemModel>[] = [
   { accessorKey: "release_date", header: "Released" },
   { accessorKey: "publisher_name", header: "Publisher" },
   { accessorKey: "platform_name", header: "Platform" },
-  { accessorKey: "market_tag", header: "Market" },
+  { accessorKey: "region_tag", header: "Region" },
 ];
 
 const ReleasesTable = () => {

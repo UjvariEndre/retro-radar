@@ -29,8 +29,8 @@ export async function getReleases({
       is_licensed,
       publisher_id,
       publisher_name:publisher_id (name),
-      market_id,
-      market_tag:market_id (tag),
+      region_id,
+      region_tag:region_id (tag),
       platform_id,
       platform_name:platform_id (name)
     `,
@@ -58,7 +58,7 @@ export async function getReleases({
     is_licensed: release.is_licensed ?? undefined,
     platform_name: release.platform_name?.name ?? undefined,
     publisher_name: release.publisher_name?.name ?? undefined,
-    market_tag: release.market_tag?.tag ?? undefined,
+    region_tag: release.region_tag?.tag ?? undefined,
   }));
 
   return { releases: transformedData };

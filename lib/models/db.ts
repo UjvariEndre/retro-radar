@@ -4,7 +4,7 @@ export const dbReleaseItemSchema = z.object({
   created_at: z.string().min(1),
   id: z.number().min(1),
   is_licensed: z.boolean().optional(),
-  market_tag: z.object({ tag: z.string() }).optional(),
+  region_tag: z.object({ tag: z.string() }).optional(),
   platform_name: z.object({ name: z.string() }),
   publisher_name: z.object({ name: z.string() }).optional(),
   release_date: z.string().optional(),
