@@ -22,10 +22,10 @@ interface FilterProviderProps {
 
 export function FilterProvider({ children }: FilterProviderProps) {
   const [filters, setFilters] = useState<SearchFilterModel>({
-    platform_name: undefined,
+    platform: undefined,
     publisher: undefined,
+    region: undefined,
     license_status: undefined,
-    region_name: undefined,
     date_from: undefined,
     date_to: undefined,
   });

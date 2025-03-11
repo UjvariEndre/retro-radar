@@ -11,7 +11,7 @@ export function useReleases() {
   const [sortBy, setSortBy] = useState("created_at");
   const { filters, pageSize, pageIndex, keyword } = useFilters();
 
-  const publisherId = filters.publisher?.id ?? null; // Extract primitive values
+  const publisherId = filters.publisher ? filters.publisher.id : null;
 
   // Fetch releases with error handling
   const fetchReleases = useCallback(async () => {
