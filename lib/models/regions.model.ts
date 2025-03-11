@@ -9,3 +9,7 @@ export const RegionItemSchema = z.object({
   tag: RegionTagSchema.min(1),
   name: CommonNameSchema.min(1),
 });
+export type RegionItemModel = z.infer<typeof RegionItemSchema>;
+
+export const RegionsSchema = z.array(RegionItemSchema);
+export type RegionsModel = z.infer<typeof RegionsSchema>;

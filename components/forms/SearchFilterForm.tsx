@@ -9,23 +9,33 @@ import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import RRScrollArea from "../features/RRScrollArea";
 import { Form } from "../ui/form";
-import SelectField from "./SelectField";
-import YearPickerField from "./YearPickerField";
+import ComboboxField from "./fields/ComboboxField";
+import SelectField from "./fields/SelectField";
+import YearPickerField from "./fields/YearPickerField";
 
 const PLATFORM_OPTIONS: SelectOptionsModel = [
-  { value: "NES", title: "NES" },
-  { value: "SNES", title: "SNES" },
+  { value: JSON.stringify({ id: 1, name: "NES" }), title: "NES" },
+  { value: JSON.stringify({ id: 2, name: "SNES" }), title: "SNES" },
 ];
 
 const PUBLISHER_OPTIONS: SelectOptionsModel = [
-  { value: "Nintendo", title: "Nintendo" },
-  { value: "Acclaim", title: "Acclaim" },
+  { value: JSON.stringify({ id: 1, name: "Nintendo" }), title: "Nintendo" },
+  { value: JSON.stringify({ id: 97, name: "Acclaim" }), title: "Acclaim" },
 ];
 
 const REGION_OPTIONS: SelectOptionsModel = [
-  { value: "JP", title: "Japan" },
-  { value: "NA", title: "North America" },
-  { value: "EU", title: "Europe" },
+  {
+    value: JSON.stringify({ id: 1, tag: "JP", name: "Japan" }),
+    title: "Japan",
+  },
+  {
+    value: JSON.stringify({ id: 2, tag: "NA", name: "North America" }),
+    title: "North America",
+  },
+  {
+    value: JSON.stringify({ id: 3, tag: "EU", name: "Europe" }),
+    title: "Europe",
+  },
 ];
 
 const LICENSE_STATUS_OPTIONS: SelectOptionsModel = [
@@ -39,7 +49,7 @@ interface SearchFilterFormProps {
 }
 
 const SearchFilterForm = ({ footer, onClose }: SearchFilterFormProps) => {
-  const { filters, setFilters } = useFilters();
+  const { filters, setFilters, setPageIndex } = useFilters();
   const form = useForm<SearchFilterModel>({
     resolver: zodResolver(SearchFilterSchema),
     defaultValues: filters,
@@ -48,6 +58,7 @@ const SearchFilterForm = ({ footer, onClose }: SearchFilterFormProps) => {
   // Submit handler
   function onSubmit(values: SearchFilterModel) {
     setFilters(values);
+    setPageIndex(0);
     onClose();
   }
 
@@ -55,28 +66,31 @@ const SearchFilterForm = ({ footer, onClose }: SearchFilterFormProps) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <RRScrollArea className="mb-2 max-h-[calc(60vh-100px)] min-h-[80px] space-y-4 overflow-auto pr-1">
-          <SelectField
+          <ComboboxField
             form={form}
-            name="platform_name"
+            name="platform"
             options={PLATFORM_OPTIONS}
             title="Platform"
-            placeholder="All Platforms"
+            triggerText="Select Platform..."
+            placeholder="Search Platform..."
             showClearButton
           />
-          <SelectField
+          <ComboboxField
             form={form}
-            name="publisher_name"
+            name="publisher"
             options={PUBLISHER_OPTIONS}
             title="Publisher"
-            placeholder="All Publishers"
+            triggerText="Select Publisher..."
+            placeholder="Search Publisher..."
             showClearButton
           />
-          <SelectField
+          <ComboboxField
             form={form}
-            name="region_name"
+            name="region"
             options={REGION_OPTIONS}
             title="Region"
-            placeholder="All Regions"
+            triggerText="Select Region..."
+            placeholder="Search Region..."
             showClearButton
           />
           <SelectField
