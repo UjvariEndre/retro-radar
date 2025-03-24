@@ -10,3 +10,7 @@ export function isSerializedObject(value: string): boolean {
     return false; // Not a valid JSON
   }
 }
+
+export function getImageUrlForRelease(type: string, id: string): string {
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/${type}/${id}.webp`;
+}

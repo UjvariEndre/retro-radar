@@ -2,6 +2,7 @@
 
 import { useFilters } from "@/hooks/useFilters";
 import { useReleases } from "@/hooks/useReleases";
+import { getImageUrlForRelease } from "@/lib/helpers";
 import { ReleaseItemModel, ReleasesModel } from "@/lib/models/releases.model";
 import {
   ColumnDef,
@@ -10,11 +11,28 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { LucideChevronLeft, LucideChevronRight } from "lucide-react";
+import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import RRButton from "../features/RRButton";
 import { Skeleton } from "../ui/skeleton";
 
 const COLUMNS: ColumnDef<ReleaseItemModel>[] = [
+  {
+    accessorKey: "cover_image",
+    header: "Cover",
+    cell: ({ row }) => (
+      <Image
+        src={getImageUrlForRelease(
+          "box-front/thumbnail",
+          row.original.id?.toString() ?? "",
+        )}
+        alt={row.original.title}
+        className="rounded-md object-cover"
+        width={150}
+        height={150}
+      />
+    ),
+  },
   { accessorKey: "title", header: "Title" },
   { accessorKey: "is_licensed", header: "Licensed" },
   { accessorKey: "release_date", header: "Released" },
@@ -114,7 +132,7 @@ const DataTable = ({ table, isLoading, recordPerPage }: DataTableProps) => {
           : table.getRowModel().rows.map((row) => (
               <tr key={row.id} className="border-b border-slate-100">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-2">
+                  <td key={cell.id} className="px-2 py-5">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
