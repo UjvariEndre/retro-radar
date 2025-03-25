@@ -36,7 +36,7 @@ const YearPickerField = ({ form }: YearPickerFieldProps) => {
   }, [field]);
 
   return (
-    <div className="flex space-x-2">
+    <div className="flex space-x-1">
       <SelectField
         form={form}
         name="date_from"

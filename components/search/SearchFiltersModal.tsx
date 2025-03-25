@@ -1,5 +1,5 @@
 import { useFilters } from "@/hooks/useFilters";
-import { LucideSlidersHorizontal } from "lucide-react";
+import { LucideFilter } from "lucide-react";
 import { useMemo, useState } from "react";
 import ButtonIndicator from "../features/ButtonIndicator";
 import RRButton from "../features/RRButton";
@@ -25,8 +25,8 @@ const SearchFiltersModal = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <RRButton variant="secondary">
-          <LucideSlidersHorizontal />
+        <RRButton variant="outline">
+          <LucideFilter />
           Filters
           {values.length > 0 && <ButtonIndicator />}
         </RRButton>

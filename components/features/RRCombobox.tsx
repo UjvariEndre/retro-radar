@@ -44,7 +44,7 @@ export function RRCombobox({
     typeof value === "object" ? JSON.stringify(value) : value;
 
   return (
-    <div className="flex space-x-2">
+    <div className="flex space-x-1">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <RRButton

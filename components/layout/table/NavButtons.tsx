@@ -2,7 +2,7 @@ import { useFilters } from "@/hooks/useFilters";
 import { useReleases } from "@/hooks/useReleases";
 import { LucideChevronLeft, LucideChevronRight } from "lucide-react";
 import { useMemo } from "react";
-import RRButton from "../features/RRButton";
+import RRButton from "../../features/RRButton";
 
 const NavButtons = () => {
   const { pageSize, pageIndex, setPageIndex } = useFilters();

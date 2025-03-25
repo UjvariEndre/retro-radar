@@ -23,7 +23,7 @@ const RRSelect = (props: RRSelectProps) => {
     props;
 
   return (
-    <div className="flex space-x-2">
+    <div className="flex space-x-1">
       <Select
         key={value ?? "empty"}
         {...props}

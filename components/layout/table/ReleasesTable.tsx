@@ -11,8 +11,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { v4 as uuidv4 } from "uuid";
-import FallbackImage from "../features/FallbackImage";
-import { Skeleton } from "../ui/skeleton";
+import FallbackImage from "../../features/FallbackImage";
+import { Skeleton } from "../../ui/skeleton";
 import NavButtons from "./NavButtons";
 
 const COLUMNS: ColumnDef<ReleaseItemModel>[] = [

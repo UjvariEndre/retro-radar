@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import RRInput from "../features/RRInput";
 import RRSelect from "../features/RRSelect";
-import SearchFiltersModal from "./SearchFiltersModal";
 
 const OPTIONS: SelectOptionsModel = [
   { value: "15", title: "15 Results Per Page" },
@@ -45,20 +44,20 @@ export default function SearchBar() {
   };
 
   return (
-    <form className="mb-2 flex gap-2">
+    <form className="mb-6 flex justify-center space-x-1">
       <RRInput
         type="text"
         value={debouncedKeyword}
         onChange={(e) => handleSearch(e)}
         placeholder="Search games..."
+        className="max-w-96"
       />
       <RRSelect
         options={OPTIONS}
         onChange={handlePageSizeChange}
         value={pageSize.toString()}
-        className="w-[300px]"
+        className="w-[200px]"
       />
-      <SearchFiltersModal />
     </form>
   );
 }
