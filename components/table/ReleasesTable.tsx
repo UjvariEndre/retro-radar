@@ -10,18 +10,17 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { LucideChevronLeft, LucideChevronRight } from "lucide-react";
-import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
-import RRButton from "../features/RRButton";
+import FallbackImage from "../features/FallbackImage";
 import { Skeleton } from "../ui/skeleton";
+import NavButtons from "./NavButtons";
 
 const COLUMNS: ColumnDef<ReleaseItemModel>[] = [
   {
     accessorKey: "cover_image",
     header: "Cover",
     cell: ({ row }) => (
-      <Image
+      <FallbackImage
         src={getImageUrlForRelease(
           "box-front/thumbnail",
           row.original.id?.toString() ?? "",
@@ -43,8 +42,8 @@ const COLUMNS: ColumnDef<ReleaseItemModel>[] = [
 
 const ReleasesTable = () => {
   // Hooks
-  const { releases, loading, count } = useReleases();
-  const { pageSize, pageIndex, setPageIndex } = useFilters();
+  const { releases, loading } = useReleases();
+  const { pageSize } = useFilters();
   const table = useReactTable({
     data: loading ? Array(10).fill({}) : releases,
     columns: COLUMNS,
@@ -59,23 +58,7 @@ const ReleasesTable = () => {
       ) : (
         <DataTable table={table} isLoading={loading} recordPerPage={pageSize} />
       )}
-      <div className="mt-2 flex gap-2">
-        <RRButton
-          onClick={() => setPageIndex(pageIndex - 1)}
-          disabled={pageIndex === 0}
-          variant="secondary"
-        >
-          <LucideChevronLeft />
-          Prev
-        </RRButton>
-        <RRButton
-          onClick={() => setPageIndex(pageIndex + 1)}
-          disabled={(pageIndex + 1) * pageSize >= count}
-          variant="secondary"
-        >
-          Next <LucideChevronRight />
-        </RRButton>
-      </div>
+      <NavButtons />
     </div>
   );
 };

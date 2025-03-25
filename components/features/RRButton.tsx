@@ -4,6 +4,7 @@ import React from "react";
 
 interface RRButtonProps extends ButtonProps {
   children: React.ReactNode;
+  isActive?: boolean;
 }
 
 const RRButton = (props: RRButtonProps) => {
@@ -26,7 +27,16 @@ const RRButton = (props: RRButtonProps) => {
   }
 
   return (
-    <Button {...props} className={cn(style, variant, props.className)}>
+    <Button
+      {...props}
+      className={cn(
+        style,
+        variant,
+        props.className,
+        props.isActive && "font-bold text-amber-400 disabled:opacity-100",
+      )}
+      disabled={props.disabled || props.isActive}
+    >
       {props.children}
     </Button>
   );
