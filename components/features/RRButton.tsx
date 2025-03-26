@@ -8,6 +8,7 @@ interface RRButtonProps extends ButtonProps {
 }
 
 const RRButton = (props: RRButtonProps) => {
+  const { isActive, ...genericProps } = props;
   const style = "h-11 px-4 py-2 rounded-lg select-none";
   let variant;
   switch (props.variant) {
@@ -28,14 +29,14 @@ const RRButton = (props: RRButtonProps) => {
 
   return (
     <Button
-      {...props}
+      {...genericProps}
       className={cn(
         style,
         variant,
         props.className,
-        props.isActive && "font-bold text-amber-400 disabled:opacity-100",
+        isActive && "font-bold text-amber-400 disabled:opacity-100",
       )}
-      disabled={props.disabled || props.isActive}
+      disabled={props.disabled || isActive}
     >
       {props.children}
     </Button>
