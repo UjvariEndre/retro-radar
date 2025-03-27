@@ -14,17 +14,18 @@ const RRButton = (props: RRButtonProps) => {
   switch (props.variant) {
     case "secondary":
       variant =
-        "bg-slate-100 text-slate-800 hover:bg-slate-100 hover:text-amber-400";
+        "bg-secondary text-secondary-foreground hover:bg-secondary hover:text-secondary-active";
       break;
     case "outline":
-      variant = "bg-white text-slate-800 hover:text-amber-400 hover:bg-white";
+      variant =
+        "bg-white text-secondary-foreground hover:text-secondary-active hover:bg-white";
       break;
     case "destructive":
       variant =
-        "bg-slate-100 text-destructive hover:bg-slate-100 hover:text-amber-400 p-3";
+        "bg-secondary text-destructive hover:bg-secondary hover:text-secondary-active p-3";
       break;
     default:
-      variant = "bg-slate-700 text-amber-400 hover:bg-slate-600";
+      variant = "bg-primary text-primary-foreground hover:bg-primary-light";
   }
 
   return (
@@ -34,7 +35,7 @@ const RRButton = (props: RRButtonProps) => {
         style,
         variant,
         props.className,
-        isActive && "font-bold text-amber-400 disabled:opacity-100",
+        isActive && "text-secondary-active font-bold disabled:opacity-100",
       )}
       disabled={props.disabled || isActive}
     >

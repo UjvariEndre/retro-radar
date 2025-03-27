@@ -29,7 +29,7 @@ const SearchTable = () => {
       <SearchBar />
 
       {/* Header */}
-      <form className="flex w-full items-center justify-between space-x-1 rounded-t-lg bg-slate-100 p-1">
+      <form className="flex w-full items-center justify-between space-x-1 rounded-t-lg bg-secondary p-1">
         <SearchFiltersModal />
 
         <div className="flex items-center space-x-1">

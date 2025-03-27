@@ -73,7 +73,7 @@ interface DataTableProps {
 const DataTable = ({ table, isLoading, recordPerPage }: DataTableProps) => {
   return (
     <table className="w-full border-collapse overflow-hidden rounded-lg border bg-white text-sm">
-      <thead className="bg-slate-100 text-left text-slate-700">
+      <thead className="bg-secondary text-left text-primary">
         {isLoading ? (
           <tr key={uuidv4()}>
             {COLUMNS.map(() => {
@@ -102,7 +102,7 @@ const DataTable = ({ table, isLoading, recordPerPage }: DataTableProps) => {
       <tbody>
         {isLoading
           ? Array.from({ length: recordPerPage }).map((_, index) => (
-              <tr key={index} className="border-b border-slate-100">
+              <tr key={index} className="border-b border-secondary">
                 {COLUMNS.map(() => {
                   return (
                     <td key={uuidv4()} className="p-2">
@@ -113,7 +113,7 @@ const DataTable = ({ table, isLoading, recordPerPage }: DataTableProps) => {
               </tr>
             ))
           : table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b border-slate-100">
+              <tr key={row.id} className="border-b border-secondary">
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="px-2 py-5">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

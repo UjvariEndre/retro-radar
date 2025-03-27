@@ -7,7 +7,10 @@ interface LinkPrimaryProps {
 
 const LinkPrimary = (props: LinkPrimaryProps) => {
   return (
-    <Link {...props} className="font-bold text-blue-800 hover:text-amber-400">
+    <Link
+      {...props}
+      className="font-bold text-accent hover:text-primary-foreground"
+    >
       {props.children}
     </Link>
   );
