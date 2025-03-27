@@ -1,8 +1,9 @@
 "use client";
 
 import { FilterProvider } from "@/context/Filter.context";
+import { useFilters } from "@/hooks/useFilters";
 import { LucideLayoutGrid, LucideList } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RRButton from "../features/RRButton";
 import RRSelect from "../features/RRSelect";
 import ListView from "../layout/table/ListView";
@@ -22,10 +23,23 @@ const SORT_OPTIONS = [
 ];
 
 const SearchTable = () => {
-  const [view, setView] = useState<ListViewVariant>(ListViewVariant.ListView);
-
   return (
     <FilterProvider>
+      <Component />
+    </FilterProvider>
+  );
+};
+export default SearchTable;
+
+const Component = () => {
+  const [view, setView] = useState<ListViewVariant>(ListViewVariant.ListView);
+  const { pageIndex } = useFilters();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pageIndex]);
+  return (
+    <>
       <SearchBar />
 
       {/* Header */}
@@ -58,7 +72,6 @@ const SearchTable = () => {
 
       {/* List */}
       {view === ListViewVariant.MosaicView ? <MosaicView /> : <ListView />}
-    </FilterProvider>
+    </>
   );
 };
-export default SearchTable;
