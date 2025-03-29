@@ -9,7 +9,7 @@ const LinkPrimary = (props: LinkPrimaryProps) => {
   return (
     <Link
       {...props}
-      className="font-bold text-accent hover:text-primary-foreground"
+      className="hover:text-rr-primary-foreground text-rr-accent font-bold"
     >
       {props.children}
     </Link>
