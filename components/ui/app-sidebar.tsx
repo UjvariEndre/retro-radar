@@ -1,4 +1,4 @@
-import Logo from "@/components/layout/Logo";
+import Logo from "@/components/design/Logo";
 import {
   Sidebar,
   SidebarContent,
@@ -20,8 +20,8 @@ export function AppSidebar({ items }: AppSidebarProps) {
     <Sidebar>
       <SidebarContent className="bg-gray-900 text-white">
         <SidebarGroup>
-          <SidebarGroupLabel className="mt-4 mb-4 justify-center">
-            <Logo className="tracking-wider text-lg" />
+          <SidebarGroupLabel className="mb-4 mt-5 justify-center opacity-100">
+            <Logo variant="dark" />
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -29,7 +29,7 @@ export function AppSidebar({ items }: AppSidebarProps) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className="hover:bg-gray-800 active:bg-gray-800 hover:text-white active:text-white"
+                    className="hover:bg-gray-800 hover:text-white active:bg-gray-800 active:text-white"
                   >
                     <a href={item.url} target={item.target}>
                       <item.icon />

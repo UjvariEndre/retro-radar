@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
+import { amber, blue, green, slate } from "tailwindcss/colors";
+import { PluginAPI } from "tailwindcss/types/config";
 
 const config: Config = {
   darkMode: ["class"],
@@ -29,10 +31,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
@@ -40,6 +38,10 @@ const config: Config = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -61,15 +63,47 @@ const config: Config = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        rr: {
+          primary: {
+            DEFAULT: slate[700],
+            light: slate[600],
+            foreground: amber[400],
+          },
+          secondary: {
+            DEFAULT: slate[100],
+            foreground: slate[800],
+            active: amber[400],
+          },
+          accent: {
+            DEFAULT: blue[800],
+          },
+          success: {
+            DEFAULT: green[400],
+          },
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+        shrikhand: ["Shrikhand", "cursive"],
+      },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [
+    tailwindcssAnimate,
+    function ({ addUtilities }: PluginAPI) {
+      addUtilities({
+        ".text-glow-left-dark": {
+          textShadow:
+            "-5px 0 3px rgba(240, 99, 165, 0.8), 0 0 2px rgba(46, 19, 32, 0.5)",
+        },
+      });
+    },
+  ],
 };
 
 export default config satisfies Config;

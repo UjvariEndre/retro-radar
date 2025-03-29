@@ -4,8 +4,8 @@ import {
   CommonNameSchema,
   CommonTimestampSchema,
   WikiTagSchema,
-} from "./common.models";
-import { MarketTagSchema } from "./markets.model";
+} from "./common.model";
+import { RegionTagSchema } from "./regions.model";
 
 export const ReleaseIsLicensedSchema = z.boolean();
 export type ReleaseIsLicensedModel = z.infer<typeof ReleaseIsLicensedSchema>;
@@ -27,15 +27,15 @@ export const ReleaseReleaseDateSchema = z.string().refine((val) => {
 export type ReleaseReleaseDateModel = z.infer<typeof ReleaseReleaseDateSchema>;
 
 export const ReleaseItemSchema = z.object({
-  id: CommonIntIdSchema.min(1),
-  created_at: CommonTimestampSchema.min(1),
+  id: CommonIntIdSchema.optional(),
+  created_at: CommonTimestampSchema.optional(),
   title: CommonNameSchema.min(1),
   platform_name: CommonNameSchema.min(1),
   wiki_tag: WikiTagSchema.optional(),
   is_licensed: ReleaseIsLicensedSchema.optional(),
   publisher_name: CommonNameSchema.optional(),
   release_date: ReleaseReleaseDateSchema.optional(),
-  market_tag: MarketTagSchema.optional(),
+  region_tag: RegionTagSchema.optional(),
 });
 export type ReleaseItemModel = z.infer<typeof ReleaseItemSchema>;
 

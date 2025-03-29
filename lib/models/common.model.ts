@@ -3,7 +3,7 @@ import { z } from "zod";
 export const CommonIntIdSchema = z.number();
 export type CommonIntIdModel = z.infer<typeof CommonIntIdSchema>;
 
-export const CommonTimestampSchema = z.string().datetime();
+export const CommonTimestampSchema = z.string().datetime().nullish();
 export type CommonTimestampModel = z.infer<typeof CommonTimestampSchema>;
 
 export const WikiTagSchema = z.string();

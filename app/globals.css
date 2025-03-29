@@ -3,6 +3,21 @@
 @tailwind utilities;
 
 @layer base {
+  /* Custom Scrollbar */
+  .scroll-area::-webkit-scrollbar {
+    width: 8px; /* Adjust width */
+  }
+
+  .scroll-area::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track color */
+    border-radius: 10px;
+  }
+
+  .scroll-area::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 10px;
+  }
+
   :root {
     --background: 0 0% 100%;
 

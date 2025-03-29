@@ -1,10 +1,12 @@
 import PageContainer from "@/components/layout/PageContainer";
+import SearchTable from "@/components/search/SearchTable";
 import TitlePrimary from "@/components/text/TitlePrimary";
 
-export default function SettingsPage() {
+export default function SearchPage() {
   return (
     <PageContainer>
-      <TitlePrimary>Settings</TitlePrimary>
+      <TitlePrimary>Search</TitlePrimary>
+      <SearchTable />
     </PageContainer>
   );
 }
