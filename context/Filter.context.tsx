@@ -1,3 +1,5 @@
+import { ReleaseListVariant } from "@/components/search/SearchTable";
+import { localStorageUtils } from "@/lib/localStorage";
 import { SearchFilterModel } from "@/lib/models/searchFilters.model";
 import { createContext, ReactNode, useState } from "react";
 
@@ -30,7 +32,13 @@ export function FilterProvider({ children }: FilterProviderProps) {
     date_to: undefined,
   });
   const [pageIndex, setPageIndex] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(30);
+  const [pageSize, setPageSize] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const viewMode = localStorageUtils.getReleaseListViewMode();
+      return viewMode === ReleaseListVariant.MosaicView ? 36 : 30;
+    }
+    return 30; // fallback for SSR
+  });
   const [keyword, setKeyword] = useState<string>("");
 
   return (

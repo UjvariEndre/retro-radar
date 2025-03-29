@@ -1,29 +1,30 @@
 import { ReleaseItemModel } from "@/lib/models/releases.model";
+import { cn } from "@/lib/utils";
 
 interface ReleaseInfoProps {
   release: ReleaseItemModel;
+  className?: string;
+  short?: boolean;
 }
 
-const ReleaseInfo = ({ release }: ReleaseInfoProps) => {
+const ReleaseInfo = ({ release, className, short }: ReleaseInfoProps) => {
+  const data = [
+    { label: "Publisher", value: release.publisher_name },
+    { label: "Release Date", value: release.release_date },
+    { label: "Platform", value: release.platform_name },
+    { label: "Region", value: release.region_tag },
+  ];
   return (
-    <div className="grid grid-cols-2 gap-2 text-sm">
-      <div>
-        <p>
-          Publisher: <span className="font-bold">{release.publisher_name}</span>
-        </p>
-        <p>
-          Platform: <span className="font-bold">{release.platform_name}</span>
-        </p>
-      </div>
-      <div className="border-l px-2">
-        <p>
-          Release Date:{" "}
-          <span className="font-bold">{release.release_date}</span>
-        </p>
-        <p>
-          Region: <span className="font-bold">{release.region_tag}</span>
-        </p>
-      </div>
+    <div className={cn("grid grid-cols-2 gap-2 text-sm", className)}>
+      {data.map((item) => {
+        return short ? (
+          <div key={item.label}>{item.value}</div>
+        ) : (
+          <div key={item.label}>
+            {item.label}: <span className="font-bold">{item.value}</span>
+          </div>
+        );
+      })}
     </div>
   );
 };

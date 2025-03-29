@@ -2,16 +2,16 @@
 
 import { FilterProvider } from "@/context/Filter.context";
 import { useFilters } from "@/hooks/useFilters";
+import { localStorageUtils } from "@/lib/localStorage";
 import { LucideLayoutGrid, LucideList } from "lucide-react";
 import { useEffect, useState } from "react";
 import RRButton from "../features/RRButton";
 import RRSelect from "../features/RRSelect";
-import ListView from "../layout/table/ListView";
-import MosaicView from "../layout/table/MosaicView";
+import ReleaseList from "../layout/table/ReleaseList";
 import SearchBar from "./SearchBar";
 import SearchFiltersModal from "./SearchFiltersModal";
 
-enum ListViewVariant {
+export enum ReleaseListVariant {
   "ListView",
   "MosaicView",
 }
@@ -32,12 +32,27 @@ const SearchTable = () => {
 export default SearchTable;
 
 const Component = () => {
-  const [view, setView] = useState<ListViewVariant>(ListViewVariant.ListView);
-  const { pageIndex } = useFilters();
+  const [view, setView] = useState<ReleaseListVariant>(() =>
+    localStorageUtils.getReleaseListViewMode(),
+  );
+  const { pageIndex, setPageSize } = useFilters();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pageIndex]);
+
+  const onListView = () => {
+    setView(ReleaseListVariant.ListView);
+    localStorageUtils.setReleaseListViewMode(ReleaseListVariant.ListView);
+    setPageSize(30);
+  };
+
+  const onMosaicView = () => {
+    setView(ReleaseListVariant.MosaicView);
+    localStorageUtils.setReleaseListViewMode(ReleaseListVariant.MosaicView);
+    setPageSize(36);
+  };
+
   return (
     <>
       <SearchBar />
@@ -49,15 +64,15 @@ const Component = () => {
         <div className="flex items-center space-x-1">
           <RRButton
             variant="outline"
-            onClick={() => setView(ListViewVariant.ListView)}
-            isActive={view === ListViewVariant.ListView}
+            onClick={onListView}
+            isActive={view === ReleaseListVariant.ListView}
           >
             <LucideList />
           </RRButton>
           <RRButton
             variant="outline"
-            onClick={() => setView(ListViewVariant.MosaicView)}
-            isActive={view === ListViewVariant.MosaicView}
+            onClick={onMosaicView}
+            isActive={view === ReleaseListVariant.MosaicView}
           >
             <LucideLayoutGrid />
           </RRButton>
@@ -71,7 +86,7 @@ const Component = () => {
       </form>
 
       {/* List */}
-      {view === ListViewVariant.MosaicView ? <MosaicView /> : <ListView />}
+      <ReleaseList listVariant={view} />
     </>
   );
 };
