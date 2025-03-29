@@ -1,11 +1,13 @@
 import { ReleaseListVariant } from "@/components/search/SearchTable";
 
-const LOCAL_STORAGE_KEYS = {
+export const LOCAL_STORAGE_KEYS = {
   releaseListViewMode: "releaseListViewMode",
 };
 
 export const localStorageUtils = {
   getReleaseListViewMode(): ReleaseListVariant {
+    if (typeof window === "undefined") return ReleaseListVariant.ListView;
+
     const stored = localStorage.getItem(LOCAL_STORAGE_KEYS.releaseListViewMode);
     if (stored === String(ReleaseListVariant.MosaicView)) {
       return ReleaseListVariant.MosaicView;

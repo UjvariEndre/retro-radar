@@ -2,7 +2,7 @@
 
 import { FilterProvider } from "@/context/Filter.context";
 import { useFilters } from "@/hooks/useFilters";
-import { localStorageUtils } from "@/lib/localStorage";
+import { LOCAL_STORAGE_KEYS, localStorageUtils } from "@/lib/localStorage";
 import { LucideLayoutGrid, LucideList } from "lucide-react";
 import { useEffect, useState } from "react";
 import RRButton from "../features/RRButton";
@@ -32,14 +32,21 @@ const SearchTable = () => {
 export default SearchTable;
 
 const Component = () => {
-  const [view, setView] = useState<ReleaseListVariant>(() =>
-    localStorageUtils.getReleaseListViewMode(),
-  );
+  const [view, setView] = useState<ReleaseListVariant | null>(null);
   const { pageIndex, setPageSize } = useFilters();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pageIndex]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEYS.releaseListViewMode);
+    if (stored === String(ReleaseListVariant.MosaicView)) {
+      setView(ReleaseListVariant.MosaicView);
+    } else {
+      setView(ReleaseListVariant.ListView);
+    }
+  }, []);
 
   const onListView = () => {
     setView(ReleaseListVariant.ListView);
@@ -86,7 +93,7 @@ const Component = () => {
       </form>
 
       {/* List */}
-      <ReleaseList listVariant={view} />
+      <ReleaseList listVariant={view ?? ReleaseListVariant.ListView} />
     </>
   );
 };
